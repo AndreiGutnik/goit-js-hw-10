@@ -67,10 +67,9 @@ function onSelected() {
 }
 
 function markupBreeds(breeds) {
-	const markup = breeds.reduce((acc, { id, name }) => {
-		return acc + `<option value = ${id}>${name}</option>`
-	}, '');
-	selectEl.innerHTML = markup;
+	selectEl.innerHTML = breeds.reduce((acc, { id, name }) => {
+    return acc + `<option value = ${id}>${name}</option>`;
+  }, '');
 
   new SlimSelect({
     select: '.breed-select',
