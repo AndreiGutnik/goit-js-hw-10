@@ -1,6 +1,5 @@
 import Notiflix from 'notiflix';
 import SlimSelect from 'slim-select';
-import catInfoCardTpl from '../templates/cat-info-card.hbs';
 
 // import 'slim-select/dist/slimselect.css';
 
@@ -16,52 +15,51 @@ const refs = {
 
 const { selectEl, loader, loaderEl, errorRef, catInfo } = refs;
 
-// loaderEl.style.display = 'block';
-// loader.style.display = 'block';
 errorRef.classList.add('no-show');
 selectEl.classList.add('no-show');
 
 setTimeout(() => {
-	fetchBreeds()
-		.then(breeds => {
-			// Create and add breeds - <option> in select
-			markupBreeds(breeds);
-		})
-		.catch(error => {
-			console.error(error);
-			Notiflix.Notify.failure('❌ The breeds of cats are not found!');
-			loaderclassList.add('no-show');
-			errorRef.classList.remove('no-show');
-		});
+  fetchBreeds()
+    .then(breeds => {
+      // Create and add breeds - <option> in select
+      markupBreeds(breeds);
+    })
+    .catch(error => {
+      console.error(error);
+      Notiflix.Notify.failure('❌ The breeds of cats are not found!');
+      loaderclassList.add('no-show');
+      errorRef.classList.remove('no-show');
+    });
 }, 2000);
 
 selectEl.addEventListener('change', onSelected);
 
 function onSelected() {
-	catInfo.classList.add('no-show');
-	loaderEl.classList.remove('no-show');
+  catInfo.style.display = 'none';
+  // catInfo.classList.add('no-show');
+  loaderEl.classList.remove('no-show');
   loader.classList.remove('no-show');
 
   const breedId = selectEl.value;
-	setTimeout(() => {
-		fetchCatByBreed(breedId)
-			.then(data => {
-				markupCatInfo(data);
-			})
-			.catch(error => {
-				console.error(error);
-				Notiflix.Notify.failure(
-					'❌ Information about cat for this breed is not found!'
-				);
-				loaderEl.classList.add('no-show');
-				loader.classList.add('no-show');
-				errorRef.classList.remove('no-show');
-			});
-	}, 2000);
+  setTimeout(() => {
+    fetchCatByBreed(breedId)
+      .then(data => {
+        markupCatInfo(data);
+      })
+      .catch(error => {
+        console.error(error);
+        Notiflix.Notify.failure(
+          '❌ Information about cat for this breed is not found!'
+        );
+        loaderEl.classList.add('no-show');
+        loader.classList.add('no-show');
+        errorRef.classList.remove('no-show');
+      });
+  }, 2000);
 }
 
 function markupBreeds(breeds) {
-	selectEl.innerHTML = breeds.reduce((acc, { id, name }) => {
+  selectEl.innerHTML = breeds.reduce((acc, { id, name }) => {
     return acc + `<option value = ${id}>${name}</option>`;
   }, '');
 
@@ -74,11 +72,20 @@ function markupBreeds(breeds) {
   loader.classList.add('no-show');
 }
 
-function markupCatInfo(data) { 
-	console.log(catInfoCardTpl(data));
-	catInfo.innerHTML = catInfoCardTpl(data);
+function markupCatInfo(data) {
+  const { imageUrl, breedName, description, temperament } = data;
+  const markup = `
+		<img src="${imageUrl}" alt="Breed of cat is ${breedName}" width='300'>
+		<div class="desc">
+			<h1 class="desc-title">${breedName}</h1>
+			<p class="desc-text">${description}</p>
+			<p class="desc-text">${temperament}</p>
+		</div>
+	`;
+  catInfo.innerHTML = markup;
 
-	loaderEl.classList.add('no-show');
+  loaderEl.classList.add('no-show');
   loader.classList.add('no-show');
-  catInfo.classList.remove('no-show');
+  catInfo.style.display = 'flex';
+  // catInfo.classList.remove('no-show');
 }
