@@ -1,5 +1,9 @@
 .breed-select {
-  width: 150px;
+	width: 200px;
+}
+
+.no-show {
+	display: none;
 }
 
 .cat-info {

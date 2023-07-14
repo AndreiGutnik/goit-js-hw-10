@@ -18,6 +18,7 @@
     "url": "https://github.com/AndreiGutnik/goit-js-hw-10/issues"
   },
   "dependencies": {
+    "flatpickr": "^4.6.13",
     "modern-normalize": "^1.1.0",
     "notiflix": "^3.2.6",
     "slim-select": "^2.6.0"
