@@ -5,7 +5,7 @@ import refs from './js/refs';
 import { hide, show } from './js/hide-element';
 import { markupBreeds, markupCatInfo } from './js/markup';
 
-const { selectEl, loader, loaderEl, errorRef, catInfo } = refs;
+const { selectEl, loader, loaderEl, errorRef, errorRef, catInfo } = refs;
 
 hide(errorRef, selectEl);
 
@@ -28,6 +28,7 @@ selectEl.addEventListener('change', onSelected);
 
 function onSelected() {
   catInfo.style.display = 'none';
+  hide(errorRef);
 	show(loaderEl, loader);
 
   const breedId = selectEl.value;
